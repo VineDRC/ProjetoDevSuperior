@@ -1,19 +1,29 @@
 // Index página da lista de filmes
 
 import axios from "axios";
+import { useEffect, useState } from "react";
 import MovieCard from "components/MovieCard";
 import Pagination from "components/Pagination";
 import { BASE_URL } from "utils/requests";
+import { MoviePage } from "types/movie";
 
 function Listing() {
 
-    // FORMA ERRADA
-    axios.get(`${BASE_URL}/movies?size=12`).then(response => {
-        console.log(response.data);
-    });
+    const [pageNumber, setPageNumber] = useState(0);
+
+    useEffect(() => {
+
+        axios.get(`${BASE_URL}/movies?size=12`).then(response => {
+            const data = response.data as MoviePage;
+            setPageNumber(data.number);
+        });
+    }, []);
+
+
 
     return (
         <div>
+            <p>{pageNumber}</p>
             <Pagination />
 
             <div className="container">
